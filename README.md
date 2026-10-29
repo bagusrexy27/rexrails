@@ -1,8 +1,8 @@
 <div align="center">
 
-![ai-guardrails: keep your AI agent on a leash, not on a rampage](assets/banner.jpg)
+![rexrails: keep your AI agent on a leash, not on a rampage](assets/banner.jpg)
 
-# 🛡️ ai-guardrails
+# 🛡️ rexrails
 
 **Keep Claude Code on a leash, not on a rampage.**
 
@@ -15,7 +15,7 @@ make it ask with options instead of guessing, and warn you before a session burn
 [![platform](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey)](#-install)
 
 ```text
-/plugin install ai-guardrails --marketplace bagusrexy27/ai-guardrails
+/plugin install rexrails --marketplace bagusrexy27/rexrails
 ```
 
 </div>
@@ -30,7 +30,7 @@ AI coding agents changed what is expensive. Writing code used to be the slow par
 - **Focus.** When building is cheap, there is always one more feature to add. The code is cheap to write, but every line still has to be maintained.
 - **Tokens.** Every message re-sends the whole conversation. A long session makes even a one-line question expensive, and on a subscription it eats your usage limit.
 
-ai-guardrails was born from one real working day on a Go backend refactor with Claude Code. Every rule in it answers something that actually went wrong that day. It turns those lessons into a few rules, two hooks, one skill, and an optional statusline segment.
+rexrails was born from one real working day on a Go backend refactor with Claude Code. Every rule in it answers something that actually went wrong that day. It turns those lessons into a few rules, two hooks, one skill, and an optional statusline segment.
 
 ## 🎯 The problems it solves
 
@@ -40,7 +40,7 @@ ai-guardrails was born from one real working day on a Go backend refactor with C
 
 **Real case.** The request was *"put it in git so I can install it on my other laptop."* The agent created a GitHub repository, committed, and pushed, all without being asked. Pushing and creating a repo are hard to undo and visible to others.
 
-**What ai-guardrails does.** *Ask before acting.* Reading and searching are free. Anything that changes something needs an explicit request for that exact action. "Put it in git" is not permission to push. Permission does not carry over to the next action. Real bugs are the one exception: they get fixed right away.
+**What rexrails does.** *Ask before acting.* Reading and searching are free. Anything that changes something needs an explicit request for that exact action. "Put it in git" is not permission to push. Permission does not carry over to the next action. Real bugs are the one exception: they get fixed right away.
 
 ### 2. 🎲 The agent decides things that are yours to decide
 
@@ -48,7 +48,7 @@ ai-guardrails was born from one real working day on a Go backend refactor with C
 
 **Real case.** While packaging this very plugin for publishing, the agent picked the MIT license on its own. It was a reasonable choice, but it was not the agent's choice to make.
 
-**What ai-guardrails does.** *Decisions as options.* Every decision comes as a question with 2-4 concrete options, the recommended one first. You click instead of typing, and you can still write your own answer. Each question stands on its own, so you never have to explain which question your answer belongs to.
+**What rexrails does.** *Decisions as options.* Every decision comes as a question with 2-4 concrete options, the recommended one first. You click instead of typing, and you can still write your own answer. Each question stands on its own, so you never have to explain which question your answer belongs to.
 
 ### 3. 🧱 Scope creep, because building is cheap
 
@@ -56,7 +56,7 @@ ai-guardrails was born from one real working day on a Go backend refactor with C
 
 **Real case.** A single request in a project management app bundled nine UI changes at once: cards, filters, popups, and more. None had been checked for real impact.
 
-**What ai-guardrails does.** *Feature gate.* Before writing code for a new feature, the agent answers four questions (real problem, significance, urgency, total complexity including maintenance) and places each item in a tier from A (do now) to D (park or drop). It shows the result and waits for your call. Big lists get split into small batches. New ideas mid-work go to a park list instead of into the code.
+**What rexrails does.** *Feature gate.* Before writing code for a new feature, the agent answers four questions (real problem, significance, urgency, total complexity including maintenance) and places each item in a tier from A (do now) to D (park or drop). It shows the result and waits for your call. Big lists get split into small batches. New ideas mid-work go to a park list instead of into the code.
 
 ### 4. 🔥 Long sessions burn tokens
 
@@ -64,7 +64,7 @@ ai-guardrails was born from one real working day on a Go backend refactor with C
 
 **Real case.** The session that produced this plugin grew past 230,000 tokens. Almost all of it was chat history, not code.
 
-**What ai-guardrails does.** The optional statusline shows the context size and your 5-hour quota, and turns yellow, then red, with concrete advice. The agent also warns you once about habits that waste tokens, like pasting whole logs or switching topics in a long session. `/save-decisions` writes what was decided to your docs, so `/clear` is safe.
+**What rexrails does.** The optional statusline shows the context size and your 5-hour quota, and turns yellow, then red, with concrete advice. The agent also warns you once about habits that waste tokens, like pasting whole logs or switching topics in a long session. `/save-decisions` writes what was decided to your docs, so `/clear` is safe.
 
 ### 5. 🔁 The agent re-reads your code every session
 
@@ -72,7 +72,7 @@ ai-guardrails was born from one real working day on a Go backend refactor with C
 
 **Real case.** In a backend with about seventy source files, every task started with the agent re-mapping the codebase. A short code map in `CLAUDE.md` removed that search.
 
-**What ai-guardrails does.** When you open a project that has no `CLAUDE.md`, the agent tells you once and offers to create one with a code map. It stays silent outside projects, so plain chat is not interrupted.
+**What rexrails does.** When you open a project that has no `CLAUDE.md`, the agent tells you once and offers to create one with a code map. It stays silent outside projects, so plain chat is not interrupted.
 
 ## 💼 Use cases
 
@@ -101,7 +101,7 @@ ai-guardrails was born from one real working day on a Go backend refactor with C
 **You:** "Put this in git so I can install it on my other laptop."
 
 <table>
-<tr><th>❌ Without</th><th>✅ With ai-guardrails</th></tr>
+<tr><th>❌ Without</th><th>✅ With rexrails</th></tr>
 <tr>
 <td>
 
@@ -162,19 +162,19 @@ Needs **Node.js 18+** on your PATH, because the hooks are small Node scripts. Wo
 In Claude Code (2.1.275 or later):
 
 ```text
-/plugin install ai-guardrails --marketplace bagusrexy27/ai-guardrails
+/plugin install rexrails --marketplace bagusrexy27/rexrails
 ```
 
 On older versions, send these as two separate prompts:
 
 ```text
-/plugin marketplace add bagusrexy27/ai-guardrails
+/plugin marketplace add bagusrexy27/rexrails
 ```
 ```text
-/plugin install ai-guardrails@ai-guardrails
+/plugin install rexrails@rexrails
 ```
 
-Then start a new session. You will see `AI-GUARDRAILS ACTIVE` in the session context. The plugin installs for your user, so it works in every project. Pick the project scope during install if you want it only for one repo and your team.
+Then start a new session. You will see `REXRAILS ACTIVE` in the session context. The plugin installs for your user, so it works in every project. Pick the project scope during install if you want it only for one repo and your team.
 
 <details>
 <summary><b>📊 Optional: context warning in the statusline</b></summary>
@@ -182,7 +182,7 @@ Then start a new session. You will see `AI-GUARDRAILS ACTIVE` in the session con
 Plugins cannot change your statusline, so this part is a manual step. Download the script once:
 
 ```sh
-curl -o ~/.claude/context-status.mjs https://raw.githubusercontent.com/bagusrexy27/ai-guardrails/main/hooks/context-status.mjs
+curl -o ~/.claude/context-status.mjs https://raw.githubusercontent.com/bagusrexy27/rexrails/main/hooks/context-status.mjs
 ```
 
 Then set the statusline in `~/.claude/settings.json`. If you have no statusline yet:
@@ -200,7 +200,7 @@ If you already have one, put the segment in front of it: `node ~/.claude/context
 From your terminal:
 
 ```sh
-claude plugin update ai-guardrails@ai-guardrails
+claude plugin update rexrails@rexrails
 ```
 
 Rules, hooks, and the skill update with the plugin. If you use the statusline segment, run the `curl` command again.
@@ -209,7 +209,7 @@ Rules, hooks, and the skill update with the plugin. If you use the statusline se
 <summary><b>🗑️ Uninstall</b></summary>
 
 ```text
-/plugin uninstall ai-guardrails@ai-guardrails
+/plugin uninstall rexrails@rexrails
 ```
 
 If you set up the statusline segment, also remove `node ~/.claude/context-status.mjs` from `statusLine.command` and delete `~/.claude/context-status.mjs`.

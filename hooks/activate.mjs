@@ -9,6 +9,6 @@ const rules = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "
 console.log(JSON.stringify({
   hookSpecificOutput: {
     hookEventName: "SessionStart",
-    additionalContext: "AI-GUARDRAILS ACTIVE. Follow these rules in every reply.\n" + rules,
+    additionalContext: "REXRAILS ACTIVE. Follow these rules in every reply.\n" + rules,
   },
 }));

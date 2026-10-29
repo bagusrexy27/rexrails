@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "ai-guardrails",
+  "name": "rexrails",
   "description": "Keep Claude Code on a leash: ask before acting, decisions as options, feature gate, and token habits.",
   "owner": {
     "name": "Bagus Rexy",
@@ -8,7 +8,7 @@
   },
   "plugins": [
     {
-      "name": "ai-guardrails",
+      "name": "rexrails",
       "description": "Stops the AI from doing more than you asked, makes it ask with options, gates new features, and warns about token waste.",
       "source": "./",
       "category": "productivity"

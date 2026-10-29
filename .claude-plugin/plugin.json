@@ -1,13 +1,13 @@
 {
-  "name": "ai-guardrails",
+  "name": "rexrails",
   "version": "0.1.0",
   "description": "Guardrails for Claude Code: ask before acting, decisions as options, feature gate, token habits, CLAUDE.md reminder, and a /save-decisions skill.",
   "author": {
     "name": "Bagus Rexy",
     "url": "https://github.com/bagusrexy27"
   },
-  "homepage": "https://github.com/bagusrexy27/ai-guardrails",
-  "repository": "https://github.com/bagusrexy27/ai-guardrails",
+  "homepage": "https://github.com/bagusrexy27/rexrails",
+  "repository": "https://github.com/bagusrexy27/rexrails",
   "license": "MIT",
   "keywords": ["guardrails", "scope-creep", "tokens", "workflow"]
 }
