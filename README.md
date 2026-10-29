@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/banner.jpg" alt="ai-guardrails: keep your AI agent on a leash, not on a rampage" width="100%">
+![ai-guardrails: keep your AI agent on a leash, not on a rampage](assets/banner.jpg)
 
 # 🛡️ ai-guardrails
 
