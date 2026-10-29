@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/banner.jpg" alt="ai-guardrails: keep your AI agent on a leash, not on a rampage" width="100%">
+
 # 🛡️ ai-guardrails
 
 **Keep Claude Code on a leash, not on a rampage.**
