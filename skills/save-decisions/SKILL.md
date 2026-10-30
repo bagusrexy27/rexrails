@@ -24,4 +24,4 @@ Running this skill is the user's explicit request to write the project's decisio
    ```
    Put open items under an "Open" list and parked ideas under a "Parked" list, each with the date.
 
-4. **Report** in the user's language: which file changed and how many items were added per kind. Then say the session can be cleared with `/clear`, and that the next session should start by asking Claude to read that file. Do not commit.
+4. **Report** in the user's language: which file changed and how many items were added per kind. Then say the session can be cleared with `/clear`, and that the next session loads its Open list automatically. Do not commit.

@@ -94,7 +94,7 @@ rexrails was born from one real working day on a Go backend refactor with Claude
 | 🧮 | **Token estimate** | Before big work, Claude shows a staged plan with a rough token estimate and a model and effort per part. After you approve, each part runs in a subagent on that model, tests checked between parts, so easy parts run on cheaper models. |
 | 💸 | **Token habits** | Claude warns you once per habit when you do something that wastes tokens, in your language. |
 | 📊 | **Context warning** (optional) | The statusline shows context size and your 5-hour quota, and tells you when to `/clear` or `/compact`. |
-| 📝 | **`/save-decisions`** | Writes the session's decisions, progress, and open work to your docs, so `/clear` never loses anything. |
+| 📝 | **`/save-decisions`** | Writes the session's decisions, progress, and open work to your docs, so `/clear` never loses anything. The next session starts with the open work loaded automatically. |
 | 📍 | **CLAUDE.md reminder** | Reminds you to create a `CLAUDE.md` in projects that have none, so Claude stops re-reading your code every session. Silent outside projects. |
 
 ## 👀 Before and after
