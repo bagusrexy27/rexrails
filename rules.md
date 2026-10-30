@@ -43,7 +43,7 @@ Anti scope creep: one feature, one goal. New ideas mid-work go to the park list.
 
 # Token estimate and staged work
 Applies to new features (after the feature gate) and to any task larger than about 50k tokens or about 5 steps. Questions and small fixes skip it.
-1. Read only what the task touches, then show a plan table: part, rough token range, model (Haiku for mechanical edits, Sonnet for normal work, Opus for hard design or tricky bugs), effort (low, medium, high). Warn when the total is above 50k. Merge tiny parts: each subagent starts fresh and re-reads files.
+1. Read only what the task touches, then show a plan table: part, rough token range, model (Haiku for mechanical edits, Sonnet for normal work, Opus for hard design or tricky bugs), effort (low, medium, high). Warn when the total is above 50k. A subagent costs about 25-40k tokens of fixed overhead before any work, so run parts under about 30k directly in the main session; use a subagent only for big parts or parts that fit a much cheaper model.
 2. Ask with options: approve, change, or cancel. Settle every decision the parts need now.
-3. On approval, run the parts one at a time, each in a subagent (Agent tool with that model and effort), giving it the goal, files, limits, and done criteria. After each part, check the result and run the tests; on failure, retry that part one model up. If a part needs a new decision, stop and ask.
+3. On approval, run the parts one at a time. For a subagent part, use the Agent tool with that model and effort, and give it the goal, files, limits, and done criteria. After each part, check the result and run the tests; on failure, retry that part one model up. If a part needs a new decision, stop and ask.
 4. Finish with one line per part: done, model used, anything left open. Approval covers only the plan's parts; commit and push still need an explicit request.
