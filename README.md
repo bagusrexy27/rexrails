@@ -91,6 +91,7 @@ rexrails was born from one real working day on a Go backend refactor with Claude
 | ✋ | **Ask before acting** | Claude does only what you explicitly asked. Reading is free, changing anything needs your request. Real bugs are the exception and get fixed right away. |
 | 🔘 | **Decisions as options** | Every decision comes as a question with 2-4 options, the recommended one first. You can always type your own answer. |
 | 🚦 | **Feature gate** | New features must pass four questions (real problem, significance, urgency, total complexity) and land in a tier before any code is written. |
+| 🧮 | **Token estimate** | Before big work, Claude shows a staged plan with a rough token estimate and a model and effort per part. After you approve, each part runs in a subagent on that model, tests checked between parts, so easy parts run on cheaper models. |
 | 💸 | **Token habits** | Claude warns you once per habit when you do something that wastes tokens, in your language. |
 | 📊 | **Context warning** (optional) | The statusline shows context size and your 5-hour quota, and tells you when to `/clear` or `/compact`. |
 | 📝 | **`/save-decisions`** | Writes the session's decisions, progress, and open work to your docs, so `/clear` never loses anything. |

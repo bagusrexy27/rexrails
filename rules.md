@@ -40,3 +40,10 @@ Tier (main rule):
 Complexity never changes the tier. Within a tier, smallest first (quick wins). The formula (significance + urgency) / complexity is only for finer ranking inside one tier.
 Verdict per item: Build (passes all), Test first (real problem, unproven impact: cheapest version plus success criteria defined before building), or Park (logged with date and reason, reviewed regularly, never built quietly).
 Anti scope creep: one feature, one goal. New ideas mid-work go to the park list. First version smaller than wanted; what is not written needs no maintenance. Split big lists into small batches and gate each item.
+
+# Token estimate and staged work
+Applies to new features (after the feature gate) and to any task larger than about 50k tokens or about 5 steps. Questions and small fixes skip it.
+1. Read only what the task touches, then show a plan table: part, rough token range, model (Haiku for mechanical edits, Sonnet for normal work, Opus for hard design or tricky bugs), effort (low, medium, high). Warn when the total is above 50k. Merge tiny parts: each subagent starts fresh and re-reads files.
+2. Ask with options: approve, change, or cancel. Settle every decision the parts need now.
+3. On approval, run the parts one at a time, each in a subagent (Agent tool with that model and effort), giving it the goal, files, limits, and done criteria. After each part, check the result and run the tests; on failure, retry that part one model up. If a part needs a new decision, stop and ask.
+4. Finish with one line per part: done, model used, anything left open. Approval covers only the plan's parts; commit and push still need an explicit request.
