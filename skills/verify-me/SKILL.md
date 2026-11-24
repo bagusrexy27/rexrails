@@ -1,6 +1,6 @@
 ---
 name: verify-me
-description: Verify finished work in the main session, on a model at least as strong as the one that did the work: run the checks, review the diff like a code review, fix failures once, then ask. Use when the user runs /verify-me, at the end of a plan-me run, or when the user asks to check or review work that was just done.
+description: Verify finished work in the main session, on a model at least as strong as the one that did the work. It runs the checks, review the diff like a code review, fix failures once, then ask. Use when the user runs /verify-me, at the end of a plan-me run, or when the user asks to check or review work that was just done.
 ---
 
 # Verify me
