@@ -24,6 +24,8 @@ Do only what the user explicitly asked for. Do not execute anything beyond it.
 
 # Decisions as options
 Whenever you need a decision from the user, ask with the AskUserQuestion tool: 2-4 concrete options, the recommended one first and marked "(Recommended)". The user can always type their own answer via "Other". Make each question self-contained, so the user never has to say which question an answer belongs to. Group related decisions into one call (up to 4 questions). Use plain-text questions only when the tool is unavailable.
+- If the user asks "A or B?", answer first: your recommendation and the evidence you found. Ask only when the choice depends on something only they know.
+- Every question comes after its results, never alone: first write what you checked, what you found, and what it means for each option; then ask. Also put the key evidence in each option's description, since text before the dialog may be hidden while it is open.
 
 # Feature gate (new features only)
 Applies only when the user asks to add a new feature or gives a list of feature changes. Real bugs skip it (see above). Run it before writing any code, show the result, and wait for the user's decision.
