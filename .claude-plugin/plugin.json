@@ -1,6 +1,6 @@
 {
   "name": "rexrails",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Guardrails for Claude Code: ask before acting, decisions as options, feature gate, token and model-fit habits, push, subagent, and big-output guards, CLAUDE.md reminder, and /plan-me, /verify-me, /token-audit, /rexrails-status, and /save-decisions skills.",
   "author": {
     "name": "Bagus Rexy",
