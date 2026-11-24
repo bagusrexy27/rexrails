@@ -30,7 +30,7 @@ AI coding agents changed what is expensive. Writing code used to be the slow par
 - **Focus.** When building is cheap, there is always one more feature to add. The code is cheap to write, but every line still has to be maintained.
 - **Tokens.** Every message re-sends the whole conversation. A long session makes even a one-line question expensive, and on a subscription it eats your usage limit.
 
-rexrails was born from one real working day on a Go backend refactor with Claude Code. Every rule in it answers something that actually went wrong that day. It turns those lessons into a few rules, two hooks, one skill, and an optional statusline segment.
+rexrails was born from one real working day on a Go backend refactor with Claude Code. Every rule in it answers something that actually went wrong that day. It turns those lessons into a few rules, a handful of hooks and skills, and an optional statusline segment.
 
 ## 🎯 The problems it solves
 
@@ -236,7 +236,7 @@ If you set up the statusline segment, also remove `node ~/.claude/context-status
 <details>
 <summary><b>Does it cost tokens?</b></summary>
 
-The rules add roughly a thousand tokens to the context of every message. The statusline and the hooks run outside the model, so they cost nothing. The context warning usually saves far more than the rules cost.
+The rules add roughly a thousand tokens to the context of every message. The statusline and the hooks run outside the model; the guard hooks only add a short note to the context when they fire (a subagent question, a big-output reminder). The context warning usually saves far more than the rules cost.
 
 </details>
 

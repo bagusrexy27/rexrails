@@ -3,7 +3,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { createHash } from "node:crypto";
 
 let input = {};
@@ -21,9 +21,10 @@ const ask = (reason) => {
   process.exit(0);
 };
 
-function git(args) {
+// ponytail: up to 5 git calls of at most 1.5s each, under the 15s hook timeout. A hook that times out lets the push through.
+function git(args, dir) {
   try {
-    return execFileSync("git", args, { cwd, encoding: "utf8", timeout: 3000, stdio: ["ignore", "pipe", "ignore"] }).trim();
+    return execFileSync("git", args, { cwd: dir, encoding: "utf8", timeout: 1500, stdio: ["ignore", "pipe", "ignore"] }).trim();
   } catch {
     return "";
   }
@@ -34,19 +35,35 @@ const firstLines = (text, n) => {
   return lines.length > n ? [...lines.slice(0, n), `... ${lines.length - n} more`].join("\n") : text;
 };
 
-// ponytail: summary is for the current branch and cwd; `git push origin other` or `git -C dir push` shows the wrong range. Parse the refspec if that bites.
+// Git Bash paths (/d/Code/x) and quoted paths, as Node on Windows expects them.
+const toPath = (p) => p.replace(/^["']|["']$/g, "").replace(/^\/([a-zA-Z])(?=\/|$)/, "$1:");
+
+// The repo and refs the push really uses: `cd <dir> && git push`, `git -C <dir> push`, `git push <remote> <src>[:<dst>]`.
+// ponytail: reads remote-tracking refs as they are locally (no fetch), so a stale remote shows extra commits.
 function pushSummary(cmd) {
-  const branch = git(["rev-parse", "--abbrev-ref", "HEAD"]) || "?";
-  const upstream = git(["rev-parse", "--abbrev-ref", "@{u}"]);
-  const force = /\s(--force(-with-lease)?|-f)\b/.test(cmd) ? " FORCE push: it can overwrite remote history." : "";
-  if (!upstream) {
-    const commits = firstLines(git(["log", "--oneline", "-10"]), 10) || "(none)";
-    return `rexrails: push of "${branch}", which has no upstream yet, so the whole branch goes to the remote.${force}\nLatest commits:\n${commits}`;
+  const at = cmd.search(/\bgit\s+(?:-C\s+\S+\s+)?push\b/);
+  const cds = [...cmd.slice(0, at).matchAll(/\bcd\s+("[^"]+"|'[^']+'|[^\s;&|]+)/g)];
+  let dir = cds.length ? resolve(cwd, toPath(cds.at(-1)[1])) : cwd;
+  const c = cmd.slice(at).match(/^git\s+-C\s+("[^"]+"|'[^']+'|\S+)/);
+  if (c) dir = resolve(dir, toPath(c[1]));
+
+  const args = (cmd.slice(at).match(/\bpush\b([^;&|]*)/)?.[1] || "").trim().split(/\s+/).filter((a) => a && !a.startsWith("-"));
+  const current = git(["rev-parse", "--abbrev-ref", "HEAD"], dir) || "?";
+  let [src, dst] = (args[1] || "").replace(/^\+/, "").split(":");
+  if (!src || src === "HEAD") src = current;
+  if (!dst || dst === "HEAD") dst = src;
+  const remoteRef = args[1] ? `${args[0]}/${dst}` : git(["rev-parse", "--abbrev-ref", "@{u}"], dir);
+  const force = /\s(--force(-with-lease)?|-f)\b/.test(cmd) || (args[1] || "").startsWith("+") ? " FORCE push: it can overwrite remote history." : "";
+  const where = `in ${dir}`;
+
+  if (!remoteRef || !git(["rev-parse", "--verify", "--quiet", remoteRef], dir)) {
+    const commits = firstLines(git(["log", "--oneline", "-10", src], dir), 10) || "(none)";
+    return `rexrails: push "${src}" ${where}; it is new on the remote, so the whole branch goes there.${force}\nLatest commits:\n${commits}`;
   }
-  const range = `${upstream}..HEAD`;
-  const commits = firstLines(git(["log", "--oneline", range]), 15) || "(none)";
-  const files = firstLines(git(["diff", "--stat", range]), 20) || "(none)";
-  return `rexrails: push "${branch}" to "${upstream}".${force}\nCommits:\n${commits}\nFiles:\n${files}`;
+  const range = `${remoteRef}..${src}`;
+  const commits = firstLines(git(["log", "--oneline", range], dir), 15) || "(none)";
+  const files = firstLines(git(["diff", "--stat", range], dir), 20) || "(none)";
+  return `rexrails: push "${src}" to "${remoteRef}" ${where}.${force}\nCommits:\n${commits}\nFiles:\n${files}`;
 }
 
 if (event === "PreToolUse" && input.tool_name === "Bash") {

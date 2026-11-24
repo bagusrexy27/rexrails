@@ -32,7 +32,7 @@
             "type": "command",
             "command": "node",
             "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/guard.mjs"],
-            "timeout": 5
+            "timeout": 15
           }
         ]
       }
