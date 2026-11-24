@@ -74,6 +74,14 @@ rexrails was born from one real working day on a Go backend refactor with Claude
 
 **What rexrails does.** When you open a project that has no `CLAUDE.md`, the agent tells you once and offers to create one with a code map. It stays silent outside projects, so plain chat is not interrupted.
 
+### 6. 💰 You pay for models and tools the task does not need
+
+**What happens.** The most expensive model answers one-line questions, and every session carries tools for services the project never touches. Both cost tokens on every message, and nobody notices.
+
+**Real case.** While building this plugin, Opus answered "which branch is this?" and "is it committed yet?", jobs a much cheaper model does just as well. The same sessions loaded a video-generation MCP server, Jira, Slack, and a dozen unused connectors: about 38k tokens of tool definitions in a repo that uses none of them.
+
+**What rexrails does.** When an easy task runs on an expensive model, the agent names the model and effort that fit; for multi-step work it asks before starting, so you can switch with `/model`. `/plan-me` gives every phase of big work the cheapest model that fits. `/token-audit` lists the plugins and MCP servers unrelated to the project, with their token cost, and turns off the ones you pick.
+
 ## 💼 Use cases
 
 | Who | Situation | What helps |
@@ -94,6 +102,7 @@ rexrails was born from one real working day on a Go backend refactor with Claude
 | 🧮 | **`/plan-me`** | Before big work, or whenever you run `/plan-me`, Claude shows a phased plan with a rough token estimate and a model and effort per part. After you approve, each part runs on the cheapest model that fits, is verified in the main session (diff and tests), and is redone with Opus only if it fails. |
 | 💸 | **Token habits** | Claude warns you once per habit when you do something that wastes tokens, in your language. |
 | 📊 | **Context warning** (optional) | The statusline shows context size and your 5-hour quota, and tells you when to `/clear` or `/compact`. |
+| 🔌 | **`/token-audit`** | Finds MCP servers and plugins unrelated to the project, shows the tokens they add to every session, and disables the ones you pick. |
 | 📝 | **`/save-decisions`** | Writes the session's decisions, progress, and open work to your docs, so `/clear` never loses anything. The next session starts with the open work loaded automatically. |
 | 📍 | **CLAUDE.md reminder** | Reminds you to create a `CLAUDE.md` in projects that have none, so Claude stops re-reading your code every session. Silent outside projects. |
 
