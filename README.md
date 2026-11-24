@@ -40,7 +40,7 @@ rexrails was born from one real working day on a Go backend refactor with Claude
 
 **Real case.** The request was *"put it in git so I can install it on my other laptop."* The agent created a GitHub repository, committed, and pushed, all without being asked. Pushing and creating a repo are hard to undo and visible to others.
 
-**What rexrails does.** *Ask before acting.* Reading and searching are free. Anything that changes something needs an explicit request for that exact action. "Put it in git" is not permission to push. Permission does not carry over to the next action. Real bugs are the one exception: they get fixed right away.
+**What rexrails does.** *Ask before acting.* Reading and searching are free. Anything that changes something needs an explicit request for that exact action. "Put it in git" is not permission to push. Permission does not carry over to the next action. Real bugs are the one exception: they get fixed right away. Because a rule is only an instruction, a hook backs it up: every `git push`, `gh repo create`, `gh release create`, or `npm publish` the agent runs stops at a permission prompt that lists the commits and files about to leave your machine.
 
 ### 2. 🎲 The agent decides things that are yours to decide
 
@@ -80,7 +80,7 @@ rexrails was born from one real working day on a Go backend refactor with Claude
 
 **Real case.** While building this plugin, Opus answered "which branch is this?" and "is it committed yet?", jobs a much cheaper model does just as well. The same sessions loaded a video-generation MCP server, Jira, Slack, and a dozen unused connectors: about 38k tokens of tool definitions in a repo that uses none of them.
 
-**What rexrails does.** When an easy task runs on an expensive model, the agent names the model and effort that fit; for multi-step work it asks before starting, so you can switch with `/model`. `/plan-me` gives every phase of big work the cheapest model that fits. `/token-audit` lists the plugins and MCP servers unrelated to the project, with their token cost, and turns off the ones you pick.
+**What rexrails does.** When an easy task runs on an expensive model, the agent names the model and effort that fit; for multi-step work it asks before starting, so you can switch with `/model`. `/plan-me` gives every phase of big work the cheapest model that fits. `/token-audit` lists the plugins and MCP servers unrelated to the project, with their token cost, and turns off the ones you pick. Before a subagent starts, the agent asks you with options and shows its 25-40k token overhead. When one tool output is bigger than about 5k tokens, the agent is told once per session to read only the part it needs.
 
 ## 💼 Use cases
 
@@ -99,11 +99,16 @@ rexrails was born from one real working day on a Go backend refactor with Claude
 | ✋ | **Ask before acting** | Claude does only what you explicitly asked. Reading is free, changing anything needs your request. Real bugs are the exception and get fixed right away. |
 | 🔘 | **Decisions as options** | Every decision comes as a question with 2-4 options, the recommended one first. You can always type your own answer. |
 | 🚦 | **Feature gate** | New features must pass four questions (real problem, significance, urgency, total complexity) and land in a tier before any code is written. |
-| 🧮 | **`/plan-me`** | Before big work, or whenever you run `/plan-me`, Claude shows a phased plan with a rough token estimate and a model and effort per part. After you approve, each part runs on the cheapest model that fits, is verified in the main session (diff and tests), and is redone with Opus only if it fails. |
+| 🧮 | **`/plan-me`** | Before big work, or whenever you run `/plan-me`, Claude shows a phased plan with a rough token estimate and a model and effort per part. After you approve, cheap subagents do the parts, and the main session (Opus) runs `/verify-me` at the end and fixes what fails. |
+| ✅ | **`/verify-me`** | Verifies finished work on a model at least as strong as the one that did it: runs the checks, reviews the diff like a code review, fixes failures once, then asks. Runs at the end of `/plan-me`, or by hand. |
 | 💸 | **Token habits** | Claude warns you once per habit when you do something that wastes tokens, in your language. |
 | 📊 | **Context warning** (optional) | The statusline shows context size and your 5-hour quota, and tells you when to `/clear` or `/compact`. |
 | 🔌 | **`/token-audit`** | Finds MCP servers and plugins unrelated to the project, shows the tokens they add to every session, and disables the ones you pick. |
 | 📝 | **`/save-decisions`** | Writes the session's decisions, progress, and open work to your docs, so `/clear` never loses anything. The next session starts with the open work loaded automatically. |
+| 🛑 | **Push guard** | `git push`, `gh repo create`, `gh release create`, and `npm publish` stop at a permission prompt listing the commits and files that will be sent. |
+| 🤖 | **Subagent guard** | Before a subagent starts, Claude asks you with options (run it as a subagent, do it in the main session, or cancel) and shows its 25-40k token overhead. Phases of an approved `/plan-me` skip the question. |
+| 📏 | **Big-output guard** | Once per session, when a tool output passes about 5k tokens, the agent is told to read only the part it needs. |
+| ℹ️ | **`/rexrails-status`** | Shows the active version, where it is installed from, its skills and hooks, and whether this session's rules are current. |
 | 📍 | **CLAUDE.md reminder** | Reminds you to create a `CLAUDE.md` in projects that have none, so Claude stops re-reading your code every session. Silent outside projects. |
 
 ## 👀 Before and after
