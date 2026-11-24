@@ -79,7 +79,10 @@ if (event === "PreToolUse" && input.tool_name === "Bash") {
 // Big tool output: it stays in the context and is re-sent with every message. Remind the agent once per session.
 const BIG_OUTPUT_TOKENS = 5000; // about 4 characters per token
 if (event === "PostToolUse") {
-  const tokens = Math.round(JSON.stringify(input.tool_response ?? "").length / 4);
+  const r = input.tool_response ?? "";
+  // Bash: count only stdout and stderr. Its tool_response also carries bashEditDiff (diffs of files the command changed), which the model does not read.
+  const text = r && typeof r === "object" && "stdout" in r ? `${r.stdout ?? ""}${r.stderr ?? ""}` : JSON.stringify(r);
+  const tokens = Math.round(text.length / 4);
   if (tokens > BIG_OUTPUT_TOKENS) {
     const marker = join(tmpdir(), `rexrails-bigout-${sid}`);
     if (!existsSync(marker)) {
